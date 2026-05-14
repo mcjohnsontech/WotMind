@@ -11,7 +11,6 @@ import { formatTimeAgo } from '@/lib/utils/format';
 export default function AuditPage() {
   const [events, setEvents] = useState<AuditEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const supabase = getSupabaseClient();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -24,26 +23,33 @@ export default function AuditPage() {
 
     fetchEvents();
 
-    // Subscribe to realtime updates
-    const channel = supabase
-      .channel('audit_events')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'audit_events',
-        },
-        (payload: any) => {
-          setEvents((prev) => [payload.new as AuditEvent, ...prev]);
-        }
-      )
-      .subscribe();
+    // Subscribe to realtime updates (only if in browser)
+    if (typeof window !== 'undefined') {
+      try {
+        const supabase = getSupabaseClient();
+        const channel = supabase
+          .channel('audit_events')
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'audit_events',
+            },
+            (payload: any) => {
+              setEvents((prev) => [payload.new as AuditEvent, ...prev]);
+            }
+          )
+          .subscribe();
 
-    return () => {
-      channel.unsubscribe();
-    };
-  }, [supabase]);
+        return () => {
+          channel.unsubscribe();
+        };
+      } catch (error) {
+        console.error('Failed to subscribe to realtime:', error);
+      }
+    }
+  }, []);
 
   return (
     <div className="p-8 space-y-6">

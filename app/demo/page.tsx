@@ -13,7 +13,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { type OcrResult as OcrResultType } from '@/types/receipt';
 import { type TrustReport } from '@/types/trust';
 import toast from 'react-hot-toast';
-import { imageToBase64, getMimeType, hashImage } from '@/lib/utils/hash';
+import { hashImage } from '@/lib/utils/hash';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 
 type Stage = 'upload' | 'ocr' | 'trust' | 'transfer' | 'complete';

@@ -1,5 +1,4 @@
 import { extractReceiptData } from '@/lib/gemini/client';
-import { imageToBase64, getMimeType } from '@/lib/utils/hash';
 import { getSupabaseServiceRoleClient } from '@/lib/supabase/server';
 import { type OcrResult } from '@/types/receipt';
 

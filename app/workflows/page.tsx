@@ -16,6 +16,8 @@ export default function WorkflowsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const fetchWorkflows = async () => {
       setIsLoading(true);
       const response = await fetch('/api/workflows');
