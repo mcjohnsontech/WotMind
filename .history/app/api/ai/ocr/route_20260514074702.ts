@@ -27,8 +27,7 @@ export async function POST(request: NextRequest) {
     const imageHash = await hashImage(file);
 
     // Convert to base64
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const buffer = await file.arrayBuffer();
     const base64 = Buffer.from(buffer).toString('base64');
     const mimeType = getMimeType(file);
 
@@ -38,18 +37,15 @@ export async function POST(request: NextRequest) {
     // Upload to Supabase Storage
     const serviceSupabase = await getSupabaseServiceRoleClient();
     const fileName = `${Date.now()}-${imageHash.slice(0, 8)}.jpg`;
-    const { data: uploadData, error: uploadError } =
-  await serviceSupabase.storage
-    .from('receipts')
-    .upload(`${user.id}/${fileName}`, buffer, {
-      contentType: mimeType,
-      upsert: true,
-    });
+    const { data: uploadData } = await serviceSupabase.storage
+      .from('receipts')
+      .upload(`${user.id}/${fileName}`, buffer, {
+        contentType: mimeType,
+      });
 
-if (uploadError) {
-  console.error(uploadError);
-  throw new Error(uploadError.message);
-}
+    if (!uploadData) {
+      throw new Error('Failed to upload image');
+    }
 
     // Create receipt record
     const { data: receipt } = await serviceSupabase

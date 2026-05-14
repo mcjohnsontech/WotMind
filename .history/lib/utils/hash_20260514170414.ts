@@ -7,18 +7,18 @@ export async function sha256(data: string): Promise<string> {
   return hashHex;
 }
 
-// export async function imageToBase64(file: File): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.onload = () => {
-//       const result = reader.result as string;
-//       const base64 = result.split(',')[1];
-//       resolve(base64);
-//     };
-//     reader.onerror = reject;
-//     reader.readAsDataURL(file);
-//   });
-// }
+export async function imageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      const base64 = result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 export async function hashImage(file: File): Promise<string> {
   const buffer = await file.arrayBuffer();
