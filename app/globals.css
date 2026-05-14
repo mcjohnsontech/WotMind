@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --surface-0: #080c10;
+  --surface-1: #0d1117;
+  --surface-2: #161b22;
+  --border: #21262d;
+  --border-glow: #58a6ff;
+  --accent-green: #3fb950;
+  --accent-amber: #d29922;
+  --accent-red: #f85149;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --background: #080c10;
+  --foreground: #e6edf3;
 }
 
 @theme inline {
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-glow: var(--border-glow);
+  --color-accent-green: var(--accent-green);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-red: var(--accent-red);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 4px 1px rgba(88, 166, 255, 0.27);
+  }
+  50% {
+    box-shadow: 0 0 12px 3px rgba(88, 166, 255, 0.53);
   }
 }
 
+@keyframes glow-pulse-green {
+  0%, 100% {
+    box-shadow: 0 0 4px 1px rgba(63, 185, 80, 0.27);
+  }
+  50% {
+    box-shadow: 0 0 12px 3px rgba(63, 185, 80, 0.53);
+  }
+}
+
+@keyframes glow-pulse-red {
+  0%, 100% {
+    box-shadow: 0 0 4px 1px rgba(248, 81, 73, 0.27);
+  }
+  50% {
+    box-shadow: 0 0 12px 3px rgba(248, 81, 73, 0.53);
+  }
+}
+
+@keyframes glow-pulse-amber {
+  0%, 100% {
+    box-shadow: 0 0 4px 1px rgba(210, 153, 34, 0.27);
+  }
+  50% {
+    box-shadow: 0 0 12px 3px rgba(210, 153, 34, 0.53);
+  }
+}
+
+* {
+  @apply border-border;
+}
+
+html {
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-surface-0 text-text-primary;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-surface-1;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-2 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-border;
 }
