@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
 import { Landing } from '@/components/landing/landing';
 
+// Prevent static prerender — the middleware already redirects logged-in users
+// to /dashboard, so this page is only ever shown to guests. force-dynamic
+// avoids the React 19 null-dispatcher crash that occurs on Netlify during
+// static generation of client-component trees.
+export const dynamic = 'force-dynamic';
+
 // This page is intentionally a Server Component. The landing UI is a Client
 // Component (components/landing/landing.tsx) — this wrapper exists so we can
 // still export `metadata` at the route level. Marking the page itself as
