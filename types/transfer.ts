@@ -1,13 +1,13 @@
 export interface TransferRequest {
   run_id: string;
-  receipt_id: string;
+  receipt_id?: string;
   amount: number;
   currency: string;
   beneficiary_account: string;
   beneficiary_bank: string;
   beneficiary_name: string;
   narration: string;
-  trust_score: number;
+  trust_score?: number;
 }
 
 export interface TransferResult {

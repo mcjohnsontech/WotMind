@@ -6,7 +6,7 @@ export function Card({ className, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-lg bg-surface-1 border border-border p-4 transition-all hover:border-border-glow/50',
+        'rounded-xl bg-surface-1 border border-border p-5 transition-all duration-200',
         className
       )}
       {...props}
@@ -23,7 +23,10 @@ export function CardTitle({
   ...props
 }: CardProps & { children: React.ReactNode }) {
   return (
-    <h2 className={cn('text-xl font-semibold text-text-primary', className)} {...props} />
+    <h2
+      className={cn('text-lg font-semibold text-text-primary tracking-tight', className)}
+      {...props}
+    />
   );
 }
 
@@ -32,7 +35,7 @@ export function CardDescription({
   ...props
 }: CardProps & { children: React.ReactNode }) {
   return (
-    <p className={cn('text-sm text-text-secondary', className)} {...props} />
+    <p className={cn('text-sm text-text-secondary mt-1', className)} {...props} />
   );
 }
 
@@ -41,5 +44,7 @@ export function CardContent({ className, ...props }: CardProps) {
 }
 
 export function CardFooter({ className, ...props }: CardProps) {
-  return <div className={cn('mt-4 flex gap-2', className)} {...props} />;
+  return (
+    <div className={cn('mt-4 flex items-center gap-2', className)} {...props} />
+  );
 }

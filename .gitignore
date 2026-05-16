@@ -49,3 +49,8 @@ CLAUDE.md
 .history
 .vscode/history
 .history/*
+
+#supabase
+/.supabase
+/supabase
+/supabase/*
