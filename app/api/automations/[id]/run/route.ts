@@ -85,10 +85,10 @@ export async function POST(
 
       // Notify user of block
       await dispatch({
-        channel: 'sms',
+        channel: 'whatsapp',
         recipient: automation.notification_config?.approval_phone || user.id,
         message_type: 'alert',
-        message_content: `WOTMIND: Transaction blocked. Reason: ${ai_result.blocked_reason}`,
+        message_content: `WOTMIND: A transaction was blocked. Reason: ${ai_result.blocked_reason}`,
         user_id: user.id,
         run_id: run.id,
       }).catch(() => {});
@@ -116,7 +116,7 @@ export async function POST(
     if (verdict === 'review_notify' || verdict === 'require_approval') {
       // Generate approval token
       const token = crypto.randomBytes(3).toString('hex').toUpperCase();
-      const expires_at = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+      const expires_at = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
       await serviceSupabase
         .from('approval_tokens')
@@ -133,12 +133,13 @@ export async function POST(
           expires_at: expires_at.toISOString(),
         });
 
-      // Send approval request
+      // Send approval request via WhatsApp — user just replies YES or NO
+      const amount = (body.input_data?.amount || 0).toLocaleString('en-NG');
       await dispatch({
-        channel: 'sms',
+        channel: 'whatsapp',
         recipient: automation.notification_config?.approval_phone || user.id,
         message_type: 'approval_request',
-        message_content: `WOTMIND: Approve ₦${(body.input_data?.amount || 0).toLocaleString()}? Reply YES-${token} to approve.`,
+        message_content: `WOTMIND: Approval needed ⚡\n\n*₦${amount}* is pending for *${automation.name}*.\n\nReply *YES* to approve or *NO* to reject.\n\nThis request expires in 24 hours.`,
         user_id: user.id,
         run_id: run.id,
       }).catch(() => {});

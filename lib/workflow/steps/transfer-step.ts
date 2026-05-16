@@ -90,7 +90,7 @@ export async function executeTransferStep(
       amount,
       currency: 'NGN',
       initiated_at: new Date().toISOString(),
-      squad_response: squadResult.response_data,
+      squad_response: squadResult.response_data as unknown as Record<string, unknown>,
     },
   };
 }

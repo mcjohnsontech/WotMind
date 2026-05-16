@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     if (!token_record) {
       // Token not found or expired
       await dispatch({
-        channel: 'sms',
+        channel: 'whatsapp',
         recipient: from_number,
         message_type: 'alert',
         message_content: 'WOTMIND: Invalid or expired approval token. Please try again or check your automation.',
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
       // Send confirmation
       await dispatch({
-        channel: 'sms',
+        channel: 'whatsapp',
         recipient: from_number,
         message_type: 'payment_confirmation',
         message_content: `WOTMIND: ✓ Transaction approved and executed. Check audit log for details.`,
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
 
       // Send rejection confirmation
       await dispatch({
-        channel: 'sms',
+        channel: 'whatsapp',
         recipient: from_number,
         message_type: 'alert',
         message_content: `WOTMIND: Transaction rejected. No amount was transferred.`,

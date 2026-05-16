@@ -125,14 +125,14 @@ export async function POST(
           status: 'completed',
           completed_at: new Date().toISOString(),
           approval_responded_at: new Date().toISOString(),
-          approved_by: phone || 'sms',
-          result_data: { message: 'Approved via SMS link' },
+          approved_by: phone || 'whatsapp',
+          result_data: { message: 'Approved via WhatsApp link' },
         })
         .eq('id', token_record.run_id);
 
       if (phone) {
         await dispatch({
-          channel: 'sms',
+          channel: 'whatsapp',
           recipient: phone,
           message_type: 'payment_confirmation',
           message_content: `WOTMIND: Transaction approved and executed.`,
@@ -152,14 +152,14 @@ export async function POST(
           status: 'failed',
           completed_at: new Date().toISOString(),
           approval_responded_at: new Date().toISOString(),
-          approved_by: phone || 'sms',
+          approved_by: phone || 'whatsapp',
           error_message: 'Rejected by user',
         })
         .eq('id', token_record.run_id);
 
       if (phone) {
         await dispatch({
-          channel: 'sms',
+          channel: 'whatsapp',
           recipient: phone,
           message_type: 'alert',
           message_content: `WOTMIND: Transaction rejected. No amount was transferred.`,

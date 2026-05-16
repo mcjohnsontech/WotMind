@@ -135,8 +135,8 @@ export default function NewAutomationPage() {
     notification_config: {
       approval_phone: '',
       notify_on_complete: '',
-      channels: ['sms'],
-      whatsapp_enabled: false,
+      channels: ['whatsapp'],
+      whatsapp_enabled: true,
     },
   });
 
@@ -445,7 +445,7 @@ export default function NewAutomationPage() {
                     Notifications
                   </h2>
                   <p className="text-sm text-text-secondary">
-                    Where should approval requests and completion alerts go?
+                    Where should approval requests and completion alerts go? WhatsApp is recommended — approvals arrive as a tap-to-approve link.
                   </p>
                 </div>
 
@@ -469,7 +469,7 @@ export default function NewAutomationPage() {
                       icon={<Phone className="w-3.5 h-3.5" />}
                     />
                     <p className="text-[11px] text-text-tertiary mt-1">
-                      Approvals sent here as SMS — reply YES-CODE or NO-CODE
+                      Approvals sent here via WhatsApp — tap the link to approve or reject
                     </p>
                   </div>
 
@@ -499,8 +499,8 @@ export default function NewAutomationPage() {
                     </label>
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        { id: 'sms', label: 'SMS', icon: MessageSquare },
                         { id: 'whatsapp', label: 'WhatsApp', icon: MessageSquare },
+                        { id: 'sms', label: 'SMS', icon: MessageSquare },
                         { id: 'email', label: 'Email', icon: Mail },
                       ].map((c) => {
                         const Icon = c.icon;

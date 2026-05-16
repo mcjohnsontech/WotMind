@@ -91,10 +91,10 @@ export async function POST(request: NextRequest) {
         transfer_results.push({ staff_id: staff.id, ...transfer });
         completed_count++;
 
-        // Send SMS receipt to staff
+        // Send WhatsApp receipt to staff
         if (staff.phone_number) {
           await dispatch({
-            channel: 'sms',
+            channel: 'whatsapp',
             recipient: staff.phone_number,
             message_type: 'receipt',
             message_content: buildPayrollReceiptSMS(staff.name, amount),
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
     const approval_phone = automation.notification_config?.approval_phone;
     if (approval_phone) {
       await dispatch({
-        channel: 'sms',
+        channel: 'whatsapp',
         recipient: approval_phone,
         message_type: 'payment_confirmation',
         message_content: `WOTMIND: Payroll executed. ${completed_count}/${staff_list.length} staff paid. Total: ₦${total_amount.toLocaleString('en-NG')}`,
