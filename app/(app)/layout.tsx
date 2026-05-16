@@ -1,5 +1,12 @@
 'use client';
 
+// Prevent static prerender for all pages in this route group.
+// Next.js 16 + React 19 crashes with a null-dispatcher error on Netlify
+// when statically pre-rendering client-component trees that include
+// QueryClient or Supabase auth. force-dynamic makes every page here
+// server-rendered on demand, which is correct for authenticated routes.
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Sidebar } from '@/components/layout/sidebar';
