@@ -1,7 +1,6 @@
 "use client";
 
 import Link from 'next/link';
-import type { Metadata } from 'next';
 import {
   Sparkles,
   ArrowRight,
@@ -32,13 +31,9 @@ import {
   HelpCircle,
 } from 'lucide-react';
 
-export const dynamic = 'force-static';
-
-export const metadata: Metadata = {
-  title: 'Wotmind — AI Business Brain for Modern African Businesses',
-  description:
-    'Wotmind transforms payment infrastructure into intelligent operational execution. Stop losing money to stockouts, fake reimbursements, payroll errors, and broken processes.',
-};
+// NOTE: page-level `metadata` cannot be exported from a Client Component.
+// The landing page metadata is defined in app/layout.tsx (root metadata
+// already specifies the Wotmind title + description).
 
 export default function Landing() {
   return (
