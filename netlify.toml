@@ -11,6 +11,18 @@
   # Quiets npm output during the build.
   NPM_FLAGS = "--prefer-offline --no-audit --progress=false"
 
+  # ---- Netlify secrets scanner ----
+  # These keys are intentionally non-secret (public URL, tuning thresholds,
+  # demo placeholders). Their values either match Tailwind opacity utilities
+  # (e.g. `/40`, `/70`) or appear in HTML/RSC output because they are public.
+  # Real secrets (SUPABASE_SERVICE_ROLE_KEY, GEMINI_API_KEY, SQUAD_SECRET_KEY,
+  # TWILIO_AUTH_TOKEN, etc.) are NOT in this list and will still be scanned.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_APP_URL,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,TRUST_BLOCK_THRESHOLD,TRUST_FLAG_THRESHOLD,TRUST_DEFAULT_AMOUNT_LIMIT,TRUST_VELOCITY_LIMIT,TRUST_VELOCITY_WINDOW_MINUTES,DEMO_BENEFICIARY_ACCOUNT,DEMO_BENEFICIARY_BANK,DEMO_BENEFICIARY_NAME,SQUAD_PUBLIC_KEY"
+
+  # Don't scan node_modules / build artifacts that contain library binaries
+  # (sharp, libvips, deno-cli) — they trigger false positives on byte sequences.
+  SECRETS_SCAN_OMIT_PATHS = "node_modules/**,.netlify/**,**/sharp-libvips-*/**,**/deno-cli/**,README.md,dev.log,.env.example"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
