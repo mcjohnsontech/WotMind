@@ -256,19 +256,30 @@ export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
 
         {/* Bottom Actions */}
         <div className="border-t border-border px-2 py-2 space-y-px">
-          <button
-            type="button"
+          <Link
+            href="/settings"
+            onClick={onMobileClose}
+            aria-current={isActive('/settings') ? 'page' : undefined}
             className={cn(
-              'flex items-center gap-2.5 rounded-md text-[12.5px] font-medium text-text-secondary hover:bg-surface-2 hover:text-text-primary transition-colors w-full',
+              'flex items-center gap-2.5 rounded-md text-[12.5px] font-medium transition-colors w-full',
+              isActive('/settings')
+                ? 'bg-accent-primary/10 text-accent-primary'
+                : 'text-text-secondary hover:bg-surface-2 hover:text-text-primary',
               !mobileOpen && collapsed
                 ? 'lg:justify-center lg:w-9 lg:h-9 lg:mx-auto px-3 py-2'
                 : 'px-3 py-2 lg:py-1.5'
             )}
             title={!mobileOpen && collapsed ? 'Settings' : undefined}
           >
-            <Settings className="w-[16px] h-[16px] shrink-0 text-text-tertiary" aria-hidden="true" />
+            <Settings
+              className={cn(
+                'w-[16px] h-[16px] shrink-0',
+                isActive('/settings') ? 'text-accent-primary' : 'text-text-tertiary'
+              )}
+              aria-hidden="true"
+            />
             {(!collapsed || mobileOpen) && <span>Settings</span>}
-          </button>
+          </Link>
           <a
             href="https://github.com/anthropics/claude-code"
             target="_blank"

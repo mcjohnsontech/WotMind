@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { getSupabaseServiceRoleClient } from '@/lib/supabase/server';
-import { extractReceiptData } from '@/lib/gemini/client';
+import { extractReceiptForUser } from '@/lib/ai-providers/router';
 import { hashImage, getMimeType } from '@/lib/utils/hash';
 
 export async function POST(request: NextRequest) {
@@ -32,8 +32,12 @@ export async function POST(request: NextRequest) {
     const base64 = Buffer.from(buffer).toString('base64');
     const mimeType = getMimeType(file);
 
-    // Extract OCR data
-    const ocrResult = await extractReceiptData(base64, mimeType);
+    // Extract OCR data via user's preferred provider, with fallback
+    const extraction = await extractReceiptForUser(user.id, {
+      imageBase64: base64,
+      mimeType,
+    });
+    const ocrResult = extraction.ocr;
 
     // Upload to Supabase Storage
     const serviceSupabase = await getSupabaseServiceRoleClient();
@@ -84,6 +88,9 @@ if (uploadError) {
         confidence: ocrResult.confidence,
         vendor: ocrResult.vendor_name,
         amount: ocrResult.amount,
+        ai_provider: extraction.provider,
+        ai_model: extraction.model,
+        ai_fallback_used: extraction.fallbackUsed,
       },
       severity: 'info',
     });
@@ -92,6 +99,11 @@ if (uploadError) {
       receipt_id: receipt.id,
       ocr_result: ocrResult,
       storage_path: uploadData.path,
+      ai: {
+        provider: extraction.provider,
+        model: extraction.model,
+        fallback_used: extraction.fallbackUsed,
+      },
     });
   } catch (error) {
     console.error('OCR error:', error);
